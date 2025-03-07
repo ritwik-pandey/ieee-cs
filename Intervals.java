@@ -10,7 +10,7 @@ class Intervals{
 		}
 		
 		while(true){
-			System.out.println("1. Add interval\n2. Get interval");
+			System.out.println("1. Add interval\n2. Get interval\n3. Exit");
 			int choice = in.nextInt();
 			switch(choice){
 				case 1:
@@ -19,6 +19,12 @@ class Intervals{
 					System.out.println("Enter the end value of interval");
 					int end = in.nextInt();
 					addInterval(a,start,end);
+					break;
+				case 2:
+					getInterval(a);
+					break;
+				case 3: 
+					System.exit(0);
 			}
 		}
 	}
@@ -30,32 +36,43 @@ class Intervals{
 			
 		}
 		else{
-		for(int i = 1; i < a.length; ++i){
-			if(a[i-1][0] == -1){
-				break;
+			for(int i = 1; i < a.length; ++i){
+				if(a[i-1][0] == -1){
+					break;
+				}
+				int prevStart = a[i-1][0];
+				int prevEnd = a[i-1][1];
+				if(start <= prevEnd){
+					prevEnd = Math.max(prevEnd,end);
+					prevStart = Math.min(prevStart,start);
+					a[i-1][1] = prevEnd;
+					a[i-1][0] = prevStart;
+					start = a[i][0];
+					end = a[i][1];
+					if(a[i][0] == -1){
+						continue;
+					}
+					
+					a[i][0] = -1;
+					a[i][1] = -1;
+					--i;
+				}else{
+					a[i][0] = start;
+					a[i][1] = end;
+					break;
+				}
 			}
-			int prevStart = a[i-1][0];
-			int prevEnd = a[i-1][1];
-			if(start <= prevEnd){
-				prevEnd = Math.max(prevEnd,end);
-				prevStart = Math.min(prevStart,start);
-				a[i-1][1] = prevEnd;
-				a[i-1][0] = prevStart;
-				start = prevStart;
-				end = prevEnd;
-				
-			}else{
-				a[i][0] = start;
-				a[i][1] = end;
-				break;
-			}
-									
-			
 		}
-		}
+		
+
+	}
+
+	public static void getInterval(int[][] a){
 		for(int j = 0; j < a.length; ++j){
-			System.out.println(a[j][0] + " " + a[j][1]);
-		}
+                        if(a[j][0] != -1){
+                                System.out.println("[" + a[j][0] + ", " + a[j][1] + "]");
+                        }
+                }
 
 	}
 }
